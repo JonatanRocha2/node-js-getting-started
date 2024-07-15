@@ -1,28 +1,31 @@
 name: Init Action
 
 # Inicia acao automaticamente em qualquer push na branch main
-# on:
-#     push:
-#         branches:
-#             - main
+on:
+    push:
+        branches:
+            - main
 
 # A acao somente é iniciada manualmente
-on: 
-    workflow_dispatch:
-        inputs:
-            who-to-greet:
-                description: Who to greet in the log
-                required: true
-                default: 'World'
-                type: string
+# on: 
+#     workflow_dispatch:
+#         inputs:
+#             who-to-greet:
+#                 description: Who to greet in the log
+#                 required: true
+#                 default: 'World'
+#                 type: string
+
+# permissions:
+#     actions: read
+#     contents: read                
 
 jobs:
     say-hello:
-        name: Say Hello World
         runs-on: ubuntu-latest   
         steps:
-            - name: Print Hello World
-              id: print-hello-world
+            - name: Checkout 
               uses: actions/checkout@v2
-              with:
-                who-to-greet: ${{ inputs.who-to-greet }}
+              
+            - name: Print Hello World
+              run: echo "hello-world"
