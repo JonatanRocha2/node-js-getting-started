@@ -28,9 +28,6 @@ jobs:
 
             - name: Install NodeJS Dependencies
               run: npm install
-              
-    execute-nodejs-tests:
-        runs-on: ubuntu-latest
-        steps:            
+                      
             - name: Execute tests
               run: npm test
