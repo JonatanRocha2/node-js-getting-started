@@ -1,24 +1,9 @@
 name: Init Action
 
-# Inicia acao automaticamente em qualquer push na branch main
 on:
     push:
         branches:
-            - main
-
-# A acao somente é iniciada manualmente
-# on: 
-#     workflow_dispatch:
-#         inputs:
-#             who-to-greet:
-#                 description: Who to greet in the log
-#                 required: true
-#                 default: 'World'
-#                 type: string
-
-# permissions:
-#     actions: read
-#     contents: read                
+            - main             
 
 jobs:
     say-hello:
@@ -26,6 +11,6 @@ jobs:
         steps:
             - name: Checkout 
               uses: actions/checkout@v2
-              
+
             - name: Print Hello World
               run: echo "hello-world"
