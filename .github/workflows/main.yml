@@ -14,3 +14,17 @@ jobs:
 
             - name: Print Hello World
               run: echo "hello-world"
+              
+    install-nodejs-dependencies:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Set NodeJS Version
+              uses: actions/setup-node@v3
+              with:
+                node-version: '16'
+
+            - name: Install NodeJS Dependencies
+              run: npm install
