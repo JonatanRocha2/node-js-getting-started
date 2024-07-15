@@ -44,3 +44,16 @@ jobs:
 
             - name: Test secret
               run: echo "The secret is ${{ secrets.API_KEY }}"
+
+            - name: Save logs
+              if: always()
+              run: |
+                mkdir -p logs
+                cp $GITHUB_WORKSPACE/*.log logs/
+                cp $GITHUB_WORKSPACE/**/*.log logs/
+
+            - name: Upload logs as artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: logs
+                path: logs/
