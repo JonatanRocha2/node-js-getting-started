@@ -3,7 +3,10 @@ name: Init Action
 on:
     push:
         branches:
-            - main             
+            - main      
+    pull_request:
+        branches:
+            - main       
 
 jobs:
     say-hello:
