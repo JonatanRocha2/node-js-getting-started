@@ -15,8 +15,14 @@ jobs:
             - name: Print Hello World
               run: echo "hello-world"
 
-    install-nodejs-dependencies:
-        runs-on: ubuntu-latest
+    build:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest, macos-latest]
+
+    # install-nodejs-dependencies:
+        # runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v3
