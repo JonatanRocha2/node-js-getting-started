@@ -1,10 +1,12 @@
 name: Init Action
 
+# Inicia acao automaticamente em qualquer push na branch main
 # on:
 #     push:
 #         branches:
 #             - main
 
+# A acao somente é iniciada manualmente
 on: 
     workflow_dispatch:
         inputs:
