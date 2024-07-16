@@ -45,19 +45,43 @@ jobs:
             #       echo "NODE_VERSION_AVAILABLE=true" >> $GITHUB_ENV
             #     fi
 
-            - name: Attempt to setup NodeJS version
+            # - name: Attempt to setup NodeJS version
+            #   id: setup_node
+            #   run: |
+            #     echo "Setting up NodeJS version ${{ matrix.node }} on ${{ matrix.runner }}"
+            #     try {
+            #       actions/setup-node@v3 --node-version=${{ matrix.node }}
+            #       echo "Node.js version ${{ matrix.node }} is set up on ${{ matrix.runner }}."
+            #       echo "NODE_VERSION_AVAILABLE=true" >> $env:GITHUB_ENV
+            #     } catch {
+            #       echo "Node.js version ${{ matrix.node }} is not available on ${{ matrix.runner }}."
+            #       echo "NODE_VERSION_AVAILABLE=false" >> $env:GITHUB_ENV
+            #     }
+            #   shell: pwsh
+
+            - name: Attempt to set up Node.js
               id: setup_node
               run: |
-                echo "Setting up NodeJS version ${{ matrix.node }} on ${{ matrix.runner }}"
-                try {
-                  actions/setup-node@v3 --node-version=${{ matrix.node }}
-                  echo "Node.js version ${{ matrix.node }} is set up on ${{ matrix.runner }}."
-                  echo "NODE_VERSION_AVAILABLE=true" >> $env:GITHUB_ENV
-                } catch {
+                if [ "${{ runner.os }}" == "Windows" ]; then
+                  echo "Setting up Node.js version ${{ matrix.node }} on ${{ matrix.runner }}"
+                  if ! actions/setup-node@v3 --node-version=${{ matrix.node }}; then
                   echo "Node.js version ${{ matrix.node }} is not available on ${{ matrix.runner }}."
                   echo "NODE_VERSION_AVAILABLE=false" >> $env:GITHUB_ENV
-                }
-              shell: pwsh
+                else
+                  echo "Node.js version ${{ matrix.node }} is set up on ${{ matrix.runner }}."
+                  echo "NODE_VERSION_AVAILABLE=true" >> $env:GITHUB_ENV
+                fi
+                else
+                  echo "Setting up Node.js version ${{ matrix.node }} on ${{ matrix.runner }}"
+                  if ! actions/setup-node@v3 --node-version=${{ matrix.node }}; then
+                  echo "Node.js version ${{ matrix.node }} is not available on ${{ matrix.runner }}."
+                  echo "NODE_VERSION_AVAILABLE=false" >> $GITHUB_ENV
+                else
+                  echo "Node.js version ${{ matrix.node }} is set up on ${{ matrix.runner }}."
+                  echo "NODE_VERSION_AVAILABLE=true" >> $GITHUB_ENV
+                fi
+                fi
+              shell: bash            
 
             - name: Restore NodeJS modules cache
               if: env.NODE_VERSION_AVAILABLE == 'true'
