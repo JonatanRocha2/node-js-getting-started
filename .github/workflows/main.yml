@@ -29,21 +29,21 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            # - name: Set NodeJS Version
-            #   uses: actions/setup-node@v3
-            #   with:
-            #     node-version: ${{ matrix.node }}
+            - name: Set NodeJS Version
+              uses: actions/setup-node@v3
+              with:
+                node-version: ${{ matrix.node }}
 
-            - name: Attempt to setup NodeJS version
-              id: setup_node
-              run: |
-                if ! actions/setup-node@v3 --node-version=${{ matrix.node }}; then
-                  echo "NodeJS Version ${{ matrix.node }} is not available on ${{ matrix.runner }}."
-                  echo "NODE_VERSION_AVAILABLE=false" >> $GITHUB_ENV
-                else
-                  echo "NodeJS Version ${{ matrix.node }} is set up on ${{ matrix.runner }}."
-                  echo "NODE_VERSION_AVAILABLE=true" >> $GITHUB_ENV
-                fi
+            # - name: Attempt to setup NodeJS version
+            #   id: setup_node
+            #   run: |
+            #     if ! actions/setup-node@v3 --node-version=${{ matrix.node }}; then
+            #       echo "NodeJS Version ${{ matrix.node }} is not available on ${{ matrix.runner }}."
+            #       echo "NODE_VERSION_AVAILABLE=false" >> $GITHUB_ENV
+            #     else
+            #       echo "NodeJS Version ${{ matrix.node }} is set up on ${{ matrix.runner }}."
+            #       echo "NODE_VERSION_AVAILABLE=true" >> $GITHUB_ENV
+            #     fi
 
             # - name: Attempt to setup NodeJS version
             #   id: setup_node
