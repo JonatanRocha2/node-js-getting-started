@@ -59,10 +59,28 @@ jobs:
                 }
               shell: pwsh
 
+            - name: Restore NodeJS modules cache
+              if: env.NODE_VERSION_AVAILABLE == 'true'
+              uses: actions/cache@v3
+              with:
+                path: ~/.npm
+                key: ${{ matrix.runner }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+                restore-keys: |
+                  ${{ matrix.runner }}-node${{ matrix.node }}-
+                  ${{ matrix.runner }}-node-
+                  ${{ matrix.runner }}-
+
             - name: Install NodeJS Dependencies
               if: env.NODE_VERSION_AVAILABLE == 'true'
               run: npm install
-                      
+
+            - name: Save NodeJS modules cache
+              if: env.NODE_VERSION_AVAILABLE == 'true'
+              uses: actions/cache@v3
+              with:
+                path: ~/.npm
+                key: ${{ matrix.runner }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+                
             # - name: Execute tests
             #   run: npm test
 
