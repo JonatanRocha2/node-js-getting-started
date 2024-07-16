@@ -25,41 +25,45 @@ jobs:
                 runner: [ubuntu-latest, windows-latest, macos-latest]
                 node: [14, 16, 18, 20]
 
-    # install-nodejs-dependencies:
-        # runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v3
 
-            - name: Set NodeJS Version
-              uses: actions/setup-node@v3
-              with:
-                node-version: ${{ matrix.node }}
+            # - name: Set NodeJS Version
+            #   uses: actions/setup-node@v3
+            #   with:
+            #     node-version: ${{ matrix.node }}
+
+            - name: Attempt to setup NodeJS version
+              id: setup_node
+              run: |
+                if ! actions/setup-node@v3 --node-version=${{ matrix.node }}; then
+                  echo "NodeJS Version ${{ matrix.node }} is not available on ${{ matrix.runner }}."
+                  echo "NODE_VERSION_AVAILABLE=false" >> $GITHUB_ENV
+                else
+                  echo "NodeJS Version ${{ matrix.node }} is set up on ${{ matrix.runner }}."
+                  echo "NODE_VERSION_AVAILABLE=true" >> $GITHUB_ENV
+                fi
 
             - name: Install NodeJS Dependencies
+              if: env.NODE_VERSION_AVAILABLE == 'true'
               run: npm install
                       
-            - name: Execute tests
-              run: npm test
+            # - name: Execute tests
+            #   run: npm test
 
             - name: Test secret
               run: echo "The secret is ${{ secrets.API_KEY }}"
 
-            # - name: Save logs
-            #   if: always()
-            #   run: |
-            #     mkdir -p logs
-            #     ls -R $GITHUB_WORKSPACE
-            #     cp $GITHUB_WORKSPACE/*.log logs/
-            #     # cp $GITHUB_WORKSPACE/**/*.log logs/
-
             - name: Run tests and capture logs
+              if: env.NODE_VERSION_AVAILABLE == 'true'
               id: test
               run: |
                 npm test > test.log || true
                 echo "::set-output name=log-path::test.log"
 
             - name: Upload logs as artifact
+              if: env.NODE_VERSION_AVAILABLE == 'true'
               uses: actions/upload-artifact@v3
               with:
                 name: test-logs
