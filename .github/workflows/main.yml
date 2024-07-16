@@ -64,11 +64,11 @@ jobs:
               uses: actions/cache@v3
               with:
                 path: ~/.npm
-                key: ${{ matrix.runner }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+                key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
                 restore-keys: |
-                  ${{ matrix.runner }}-node${{ matrix.node }}-
-                  ${{ matrix.runner }}-node-
-                  ${{ matrix.runner }}-
+                  ${{ runner.os }}-node${{ matrix.node }}-
+                  ${{ runner.os }}-node-
+                  ${{ runner.os }}-
 
             - name: Install NodeJS Dependencies
               if: env.NODE_VERSION_AVAILABLE == 'true'
@@ -80,7 +80,7 @@ jobs:
               with:
                 path: ~/.npm
                 key: ${{ matrix.runner }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
-                
+
             # - name: Execute tests
             #   run: npm test
 
