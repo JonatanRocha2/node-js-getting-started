@@ -84,7 +84,7 @@ jobs:
             #   shell: bash            
 
             - name: Restore NodeJS modules cache
-              if: env.NODE_VERSION_AVAILABLE == 'true'
+            #   if: env.NODE_VERSION_AVAILABLE == 'true'
               uses: actions/cache@v3
               with:
                 path: ~/.npm
@@ -95,11 +95,11 @@ jobs:
                   ${{ runner.os }}-
 
             - name: Install NodeJS Dependencies
-              if: env.NODE_VERSION_AVAILABLE == 'true'
+            #   if: env.NODE_VERSION_AVAILABLE == 'true'
               run: npm install
 
             - name: Save NodeJS modules cache
-              if: env.NODE_VERSION_AVAILABLE == 'true'
+            #   if: env.NODE_VERSION_AVAILABLE == 'true'
               uses: actions/cache@v3
               with:
                 path: ~/.npm
@@ -112,14 +112,14 @@ jobs:
               run: echo "The secret is ${{ secrets.API_KEY }}"
 
             - name: Run tests and capture logs
-              if: env.NODE_VERSION_AVAILABLE == 'true'
+            #   if: env.NODE_VERSION_AVAILABLE == 'true'
               id: test
               run: |
                 npm test > test.log || true
                 echo "::set-output name=log-path::test.log"
 
             - name: Upload logs as artifact
-              if: env.NODE_VERSION_AVAILABLE == 'true'
+            #   if: env.NODE_VERSION_AVAILABLE == 'true'
               uses: actions/upload-artifact@v3
               with:
                 name: test-logs
